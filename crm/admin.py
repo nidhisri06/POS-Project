@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     Customer, MembershipPlan, CustomerMembership,
     LoyaltyTransaction, CustomerOrderHistory,
-    Campaign, CustomerFeedback, PersonalizedOffer
+    Campaign, CustomerFeedback, PersonalizedOffer,Notification
 )
 
 admin.site.register(Customer)
@@ -13,3 +13,4 @@ admin.site.register(CustomerOrderHistory)
 admin.site.register(Campaign)
 admin.site.register(CustomerFeedback)
 admin.site.register(PersonalizedOffer)
+admin.site.register(Notification)

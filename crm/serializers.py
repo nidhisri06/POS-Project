@@ -71,3 +71,15 @@ class CustomerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = '__all__'
+
+from .models import (
+    Customer, MembershipPlan, CustomerMembership,
+    LoyaltyTransaction, CustomerOrderHistory,
+    Campaign, CustomerFeedback, PersonalizedOffer, Notification
+)
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'

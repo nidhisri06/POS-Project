@@ -140,3 +140,31 @@ class PersonalizedOffer(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Notification(models.Model):
+    NOTIFICATION_TYPE = [
+        ('sms', 'SMS'),
+        ('email', 'Email'),
+        ('whatsapp', 'WhatsApp'),
+        ('push', 'Push Notification'),
+    ]
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('sent', 'Sent'),
+        ('failed', 'Failed'),
+    ]
+
+    restaurant = models.ForeignKey('onboarding.Restaurant', on_delete=models.CASCADE, related_name='notifications')
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True, related_name='notifications')
+    notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPE)
+    title = models.CharField(max_length=255)
+    message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    sent_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'notifications'
+
+    def __str__(self):
+        return f"{self.title} - {self.status}"

@@ -181,3 +181,31 @@ class PersonalizedOfferViewSet(viewsets.ModelViewSet):
         if restaurant_id:
             qs = qs.filter(restaurant_id=restaurant_id)
         return qs
+    
+from .models import (
+    Customer, MembershipPlan, CustomerMembership,
+    LoyaltyTransaction, CustomerOrderHistory,
+    Campaign, CustomerFeedback, PersonalizedOffer, Notification
+)
+from .serializers import (
+    CustomerSerializer, CustomerDetailSerializer,
+    MembershipPlanSerializer, CustomerMembershipSerializer,
+    LoyaltyTransactionSerializer, CustomerOrderHistorySerializer,
+    CampaignSerializer, CustomerFeedbackSerializer,
+    PersonalizedOfferSerializer, NotificationSerializer
+)
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        restaurant_id = self.request.query_params.get('restaurant_id')
+        customer_id = self.request.query_params.get('customer_id')
+        qs = Notification.objects.all()
+        if restaurant_id:
+            qs = qs.filter(restaurant_id=restaurant_id)
+        if customer_id:
+            qs = qs.filter(customer_id=customer_id)
+        return qs

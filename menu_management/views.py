@@ -2,6 +2,7 @@ from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import MenuCategory, MenuItem, ModifierGroup, Modifier
+from .models import MenuCategory, MenuItem, ModifierGroup, Modifier, ComboMeal, BranchMenuPrice
 from .serializers import (
     MenuCategorySerializer, MenuCategoryCreateSerializer,
     MenuItemSerializer, MenuItemCreateSerializer,
@@ -77,4 +78,38 @@ class ModifierViewSet(viewsets.ModelViewSet):
         group_id = self.request.query_params.get('group_id')
         if group_id:
             return Modifier.objects.filter(modifier_group_id=group_id)
+        return super().get_queryset()
+    
+
+from .serializers import (
+    MenuCategorySerializer, MenuCategoryCreateSerializer,
+    MenuItemSerializer, MenuItemCreateSerializer,
+    ModifierGroupSerializer, ModifierSerializer,
+    ComboMealSerializer, ComboMealCreateSerializer, BranchMenuPriceSerializer
+)
+
+
+class ComboMealViewSet(viewsets.ModelViewSet):
+    queryset = ComboMeal.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return ComboMealCreateSerializer
+        return ComboMealSerializer
+
+    def get_queryset(self):
+        branch_id = self.request.query_params.get('branch_id')
+        if branch_id:
+            return ComboMeal.objects.filter(branch_id=branch_id)
+        return super().get_queryset()
+
+
+class BranchMenuPriceViewSet(viewsets.ModelViewSet):
+    queryset = BranchMenuPrice.objects.all()
+    serializer_class = BranchMenuPriceSerializer
+
+    def get_queryset(self):
+        branch_id = self.request.query_params.get('branch_id')
+        if branch_id:
+            return BranchMenuPrice.objects.filter(branch_id=branch_id)
         return super().get_queryset()

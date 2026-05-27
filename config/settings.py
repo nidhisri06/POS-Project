@@ -23,6 +23,8 @@ DATABASES = {
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
+RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'onboarding',
     'menu_management',
     'crm',
+    'payments',
 ]
 TEMPLATES = [
     {

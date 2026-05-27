@@ -70,3 +70,34 @@ class Modifier(models.Model):
 
     def __str__(self):
         return self.name
+    
+class ComboMeal(models.Model):
+    branch = models.ForeignKey('onboarding.Branch', on_delete=models.CASCADE, related_name='combos')
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    combo_price = models.DecimalField(max_digits=10, decimal_places=2)
+    image_url = models.URLField(blank=True, null=True)
+    is_available = models.BooleanField(default=True)
+    valid_from = models.DateField(null=True, blank=True)
+    valid_until = models.DateField(null=True, blank=True)
+    items = models.ManyToManyField(MenuItem, related_name='combos', blank=True)
+
+    class Meta:
+        db_table = 'combo_meals'
+
+    def __str__(self):
+        return self.name
+
+
+class BranchMenuPrice(models.Model):
+    branch = models.ForeignKey('onboarding.Branch', on_delete=models.CASCADE, related_name='branch_prices')
+    menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, related_name='branch_prices')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_available = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'branch_menu_prices'
+        unique_together = ('branch', 'menu_item')
+
+    def __str__(self):
+        return f"{self.branch.name} - {self.menu_item.name}: {self.price}"

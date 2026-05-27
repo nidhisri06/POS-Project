@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.utils import timezone
 from .models import Restaurant, Branch, Subscription, TaxConfig
+from .models import Restaurant, Branch, Subscription, TaxConfig, StaffMember, RestaurantDocument, PaymentSetup
 from .serializers import (
     RestaurantSerializer, RestaurantCreateSerializer,
     BranchSerializer, SubscriptionSerializer, TaxConfigSerializer
@@ -74,4 +75,44 @@ class TaxConfigViewSet(viewsets.ModelViewSet):
         restaurant_id = self.request.query_params.get('restaurant_id')
         if restaurant_id:
             return TaxConfig.objects.filter(restaurant_id=restaurant_id, is_active=True)
+        return super().get_queryset()
+    
+from .models import Restaurant, Branch, Subscription, TaxConfig, StaffMember, RestaurantDocument, PaymentSetup
+from .serializers import (
+    RestaurantSerializer, RestaurantCreateSerializer,
+    BranchSerializer, SubscriptionSerializer, TaxConfigSerializer,
+    StaffMemberSerializer, RestaurantDocumentSerializer, PaymentSetupSerializer
+)
+
+
+class StaffMemberViewSet(viewsets.ModelViewSet):
+    queryset = StaffMember.objects.all()
+    serializer_class = StaffMemberSerializer
+
+    def get_queryset(self):
+        branch_id = self.request.query_params.get('branch_id')
+        if branch_id:
+            return StaffMember.objects.filter(branch_id=branch_id)
+        return super().get_queryset()
+
+
+class RestaurantDocumentViewSet(viewsets.ModelViewSet):
+    queryset = RestaurantDocument.objects.all()
+    serializer_class = RestaurantDocumentSerializer
+
+    def get_queryset(self):
+        restaurant_id = self.request.query_params.get('restaurant_id')
+        if restaurant_id:
+            return RestaurantDocument.objects.filter(restaurant_id=restaurant_id)
+        return super().get_queryset()
+
+
+class PaymentSetupViewSet(viewsets.ModelViewSet):
+    queryset = PaymentSetup.objects.all()
+    serializer_class = PaymentSetupSerializer
+
+    def get_queryset(self):
+        restaurant_id = self.request.query_params.get('restaurant_id')
+        if restaurant_id:
+            return PaymentSetup.objects.filter(restaurant_id=restaurant_id)
         return super().get_queryset()
